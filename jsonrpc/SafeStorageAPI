@@ -1,0 +1,130 @@
+{
+  "openrpc": "1.2.6",
+  "info": {
+    "version": "1.0.0",
+    "title": "Safe Storage API"
+  },
+  "servers": [
+      {
+      "url": "https://api.example.com/{version}",
+      "variables": {
+        "version": {
+          "default": "v1",
+          "enum": ["v1", "v2"]
+            }
+        }
+      }
+  ],
+  "methods": [
+    {
+      "name": "manageSecretData",
+      "summary": "Manage secure data storage",
+      "description": "Perform actions like add, get, and delete on secure data based on the user's access level",
+      "params": [
+        {
+          "name": "action",
+          "description": "Action type (add, get, delete)",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "enum": ["add", "get", "delete"]
+          }
+        },
+        {
+          "name": "dataID",
+          "description": "Data identifier",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "userData",
+          "description": "Data to add",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "accessLevel",
+          "description": "Level of access (user, admin, superAdmin)",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "enum": ["user", "admin", "superAdmin"]
+          }
+        },
+        {
+          "name": "language",
+          "description": "Language for response messages.",
+          "schema": {
+            "type": "string",
+            "enum": ["en-US", "fr-FR", "es-ES"]
+        }
+    }
+    ],
+      "result": {
+        "name": "operation",
+        "description": "Operation details",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["success", "failure"]
+            },
+            "get_data": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "errors": [
+          {
+              "code": 1001,
+              "message": "Insufficient rights to perform this operation"
+          },
+          {
+              "code": 1002,
+              "message": "No data to delete"
+          },
+          {
+              "code": 1003,
+              "message": "No data to get"
+          }
+      ],
+      "examples": [
+        {
+          "name": "manageSecretDataExample",
+          "description": "Insert new data as administrator",
+          "params": [
+            {
+              "name": "action",
+              "value": "add"
+            },
+            {
+              "name": "dataID",
+              "value": 2
+            },
+            {
+              "name": "userData",
+              "value": "New data"
+            },
+            {
+              "name": "accessLevel",
+              "value": "superAdmin"
+            }
+          ],
+          "result": {
+            "name": "manageSecretDataExampleResult",
+            "value": {
+              "status": "success",
+              "user_data": ""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
